@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             textBox1 = new TextBox();
             textBox2 = new TextBox();
-            textBox3 = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -50,6 +49,10 @@
             textBox7 = new TextBox();
             label8 = new Label();
             openFileDialog1 = new OpenFileDialog();
+            button2 = new Button();
+            textBox3 = new RichTextBox();
+            helpProvider1 = new HelpProvider();
+            button4 = new Button();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -68,16 +71,6 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(493, 26);
             textBox2.TabIndex = 1;
-            // 
-            // textBox3
-            // 
-            textBox3.Font = new Font("Times New Roman", 12F);
-            textBox3.Location = new Point(209, 264);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(493, 230);
-            textBox3.TabIndex = 2;
-            textBox3.WordWrap = false;
             // 
             // label1
             // 
@@ -190,12 +183,14 @@
             button3.Name = "button3";
             button3.Size = new Size(129, 53);
             button3.TabIndex = 14;
-            button3.Text = "Log In";
+            button3.Text = "Reset";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += btnClearCredentials_Click;
             // 
             // panel2
             // 
             panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(button4);
             panel2.Controls.Add(button3);
             panel2.Controls.Add(label6);
             panel2.Controls.Add(label5);
@@ -246,14 +241,46 @@
             // 
             // openFileDialog1
             // 
-            openFileDialog1.FileName = "openFileDialog1";
+            openFileDialog1.Multiselect = true;
+            openFileDialog1.ShowPreview = true;
             openFileDialog1.FileOk += openFileDialog1_FileOk;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(637, 502);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 21;
+            button2.Text = "Browse";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // textBox3
+            // 
+            textBox3.Font = new Font("Tahoma", 12F);
+            textBox3.Location = new Point(209, 272);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(493, 222);
+            textBox3.TabIndex = 22;
+            textBox3.Text = "";
+            // 
+            // button4
+            // 
+            button4.Image = (Image)resources.GetObject("button4.Image");
+            button4.Location = new Point(455, 76);
+            button4.Name = "button4";
+            button4.Size = new Size(35, 35);
+            button4.TabIndex = 15;
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 601);
+            Controls.Add(textBox3);
+            Controls.Add(button2);
             Controls.Add(label8);
             Controls.Add(textBox7);
             Controls.Add(textBox6);
@@ -264,7 +291,6 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(textBox3);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -282,7 +308,6 @@
 
         private TextBox textBox1;
         private TextBox textBox2;
-        private TextBox textBox3;
         private Label label1;
         private Label label2;
         private Label label3;
@@ -301,5 +326,9 @@
         private TextBox textBox7;
         private Label label8;
         private OpenFileDialog openFileDialog1;
+        private Button button2;
+        public RichTextBox textBox3;
+        private Button button4;
+        private HelpProvider helpProvider1;
     }
 }

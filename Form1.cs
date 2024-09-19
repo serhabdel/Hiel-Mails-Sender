@@ -1,20 +1,20 @@
-using Microsoft.Office.Interop.Outlook;
-using System.Reflection;
+using System;
+using System.IO;
 using System.Linq;
-using System.Net.Mail;
-using System.Net.NetworkInformation;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Csv;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Diagnostics;
 
 
 namespace Hiel_Mails_Sender
 {
     public partial class Main : Form
     {
-        private string csvFilePath = "sent_emails.csv";
+        private string sentEmailsFilePath = "sent_emails.csv";
+        private string credentialsFilePath = "user_credentials.csv";
+        private string attachedFilePath = string.Empty;
 
         public Main()
         {
@@ -24,7 +24,7 @@ namespace Hiel_Mails_Sender
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            LoadCredentials();
         }
 
         private async void btnSendEmail_Click(object sender, EventArgs e)
@@ -49,6 +49,9 @@ namespace Hiel_Mails_Sender
                 return;
             }
 
+            SaveCredentials(senderEmail, appPassword);
+
+            string htmlEmailBody = $"<html><body style='font-size:14px;line-height=1.5;'>{emailBody}</body></html>";
             string[] recipientList = recipients.Split(',').Select(r => r.Trim()).ToArray();
 
             SmtpClient smtpClient = null;
@@ -80,7 +83,7 @@ namespace Hiel_Mails_Sender
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(csvFilePath, true))
+                using (StreamWriter writer = new StreamWriter(sentEmailsFilePath, true))
                 {
                     for (int i = 0; i < recipientList.Length; i++)
                     {
@@ -95,9 +98,9 @@ namespace Hiel_Mails_Sender
                         mail.To.Add(recipient);
 
                         // Attachment Feature
-                        if (!string.IsNullOrEmpty(textBox7.Text))
+                        if (!string.IsNullOrEmpty(attachedFilePath))
                         {
-                            System.Net.Mail.Attachment attachment = new System.Net.Mail.Attachment(textBox7.Text);
+                            Attachment attachment = new Attachment(attachedFilePath);
                             mail.Attachments.Add(attachment);
                         }
 
@@ -131,7 +134,90 @@ namespace Hiel_Mails_Sender
 
         private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // Placeholder for potential future use
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Create and show the OpenFileDialog
+            using (OpenFileDialog openFileDialog1 = new OpenFileDialog())
+            {
+                openFileDialog1.Title = "Select a file to attach";
+                openFileDialog1.Filter = "All files (*.*)|*.*";
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    // Get the file path selected by the user
+                    attachedFilePath = openFileDialog1.FileName;
+                    MessageBox.Show($"File attached: {attachedFilePath}");
+                    textBox7.Text = attachedFilePath;
+                }
+            }
+        }
+
+        private void btnClearCredentials_Click(object sender, EventArgs e)
+        {
+            File.Delete(credentialsFilePath);
+            MessageBox.Show("User credentials have been cleared.");
+        }
+
+        private void SaveCredentials(string email, string password)
+        {
+            using (StreamWriter writer = new StreamWriter(credentialsFilePath, false))
+            {
+                writer.WriteLine($"{email},{password}");
+            }
+        }
+
+        private void LoadCredentials()
+        {
+            if (File.Exists(credentialsFilePath))
+            {
+                string[] lines = File.ReadAllLines(credentialsFilePath);
+                if (lines.Length > 0)
+                {
+                    string[] credentials = lines[0].Split(',');
+                    if (credentials.Length == 2)
+                    {
+                        textBox4.Text = credentials[0];
+                        textBox5.Text = credentials[1];
+                    }
+                }
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string prov = comboBox1.Text;
+            if (prov == "Gmail")
+            {
+                OpenUrl("https://www.youtube.com/watch?v=hXiPshHn9Pw");
+            }
+            else if (prov == "Outlook")
+            {
+                OpenUrl("https://www.youtube.com/watch?v=5ukSRLRDQIw");
+            }
+            else
+            {
+                MessageBox.Show("Please select a valid email provider.");
+            }
+        }
+
+        private void OpenUrl(string url)
+        {
+            try
+            {
+                var psi = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                System.Diagnostics.Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
         }
     }
 }
