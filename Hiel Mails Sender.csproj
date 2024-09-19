@@ -9,4 +9,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Csv" Version="2.0.93" />
+    <PackageReference Include="Microsoft.Office.Interop.Outlook" Version="15.0.4797.1004" />
+    <PackageReference Include="SmtpServer" Version="10.0.1" />
+    <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
+  </ItemGroup>
+
 </Project>
