@@ -52,3 +52,6 @@ Contributions to improve Hiel Mails Sender are welcome. Please feel free to fork
 ## Disclaimer
 
 This tool is for legitimate bulk emailing purposes only. Users are responsible for complying with all applicable laws and regulations regarding bulk email sending.
+
+## Download the build
+You can download the excutable version (.exe), [Click Here](https://www.mediafire.com/file/nn3ujzfdpa5m7le/Hiel_Mails_Sender.exe/file) to download the app.
